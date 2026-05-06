@@ -400,7 +400,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
 
-**Built with ❤️ using ASP.NET Core 9**
+**Built with ❤️ using ASP.NET Core 10**
 
 [![GitHub stars](https://img.shields.io/github/stars/your-username/ECommerceStore?style=social)](https://github.com/your-username/ECommerceStore)
 [![GitHub forks](https://img.shields.io/github/forks/your-username/ECommerceStore?style=social)](https://github.com/your-username/ECommerceStore)
