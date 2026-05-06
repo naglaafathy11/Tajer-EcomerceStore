@@ -38,7 +38,8 @@ namespace Tajer.PL
             builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
-            }); var app = builder.Build();
+            });
+            var app = builder.Build();
 
 
 

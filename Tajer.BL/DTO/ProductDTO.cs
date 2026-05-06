@@ -14,12 +14,15 @@ namespace Tajer.BL.DTO
         public string Description { get; set; } = null!;
         public decimal? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
-        public string ImageUrl { get; set; } = null!;
         public bool IsActive { get; set; }
-        public string SKU { get; set; } = null!;
 
         public string AddedAt { get; set; } = null!;
         public string? UpdatedAt { get; set; } 
+
+        public int CategoryId { get; set; }
+
+        public string CategoryName { get; set; } = null!; 
+
 
 
 

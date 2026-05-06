@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Tajer.DAL.Data;
@@ -29,9 +30,17 @@ namespace Tajer.DAL.Repo.Implemntation
 
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? cond = null)
+
         {
-            return await _context.Set<T>().ToListAsync();
+            if(cond == null)
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+            else
+            {
+                return await _context.Set<T>().Where(cond).ToListAsync();
+            }
         }
 
         public async Task<T?> GetById(TK id)
