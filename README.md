@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🛒 ECommerceStore
+# 🛒 Tajer ECommerceStore
 
-### Full-Stack E-Commerce Platform built with ASP.NET Core 9 MVC
+### Full-Stack E-Commerce Platform built with ASP.NET Core 10 MVC
 
-[![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-9.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-EF%20Core-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
 [![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
 [![Identity](https://img.shields.io/badge/ASP.NET%20Identity-Auth-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity)
