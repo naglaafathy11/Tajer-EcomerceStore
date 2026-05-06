@@ -10,11 +10,15 @@ namespace Tajer.BL.Services.Interfaces
 {
     public interface IProductService
     {
-        Task <IEnumerable<ProductDTO>> GetAllProducts();
-        Task <ProductDTO> GetProductById(int id);
-        void AddProduct(ProductDTO productdto);
-        void UpdateProduct(ProductDTO productdto);
-        void DeleteProduct(int id);
+        Task<IEnumerable<ProductDTO>> GetAllAsync();
+        Task<IEnumerable<ProductDTO>> GetAllForAdminAsync();
+        Task<ProductDTO> GetByIdAsync(int id);
+        Task<IEnumerable<ProductDTO>> GetRelatedProductsAsync(ProductDTO product);
+        Task<ProductDTO> CreateAsync(ProductDTO productDto);
+        void UpdateAsync(ProductDTO productDto);
+        void DeleteAsync(ProductDTO productDto);
+        Task<bool> ToggleActiveAsync(ProductDTO product);
+        Task<decimal> GetAverageRatingAsync(ProductDTO product);
 
     }
 }

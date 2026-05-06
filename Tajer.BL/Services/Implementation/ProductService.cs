@@ -13,58 +13,97 @@ namespace Tajer.BL.Services.Implementation
 {
     public class ProductService(IUnitOfWork _unit , IMapper _mapper) : IProductService
     {
-        
+        public async Task<ProductDTO> CreateAsync(ProductDTO productDto)
+        {
+            // 1. Validate Input
+            if(productDto is null)
+                throw new Exception("Product data is required.");
+            if(string.IsNullOrWhiteSpace(productDto.Name))
+                throw new Exception("Product name is required.");
+            if(productDto.Price <= 0)
+                throw new Exception("Product price must be greater than zero.");
+
+            // 2. Get Repos
+            var ProductRepo = _unit.GetRepo<Product, int>();
+            var CategoryRepo = _unit.GetRepo<Category, int>();
+            // 3. Check Category Exists
+            var  category = CategoryRepo.GetById(productDto.CategoryId) ;
+            if(category is null)
+                throw new Exception("Category not found.");
+
+            // 4. Check Duplicate (Business Rule)
+            var products = await ProductRepo.GetAll();
+            bool isDublicate = products.Any(p => p.Name.ToLower() == productDto.Name.ToLower());
+            if(isDublicate)
+                throw new Exception("A product with the same name already exists.");
+
+
+            // 5. Map DTO → Entity
+            var productEntity = _mapper.Map<Product>(productDto);
+            // 6. Apply Business Logic of Date
+            productEntity.CreatedAt = DateTime.UtcNow;
+
+            // 7. Add
+            await  ProductRepo.Add(productEntity);
+            // 8. Save
+             await _unit.Save();
+            // 9. Return Result
+            return _mapper.Map<ProductDTO>(productEntity);
+        }
+
+
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync()
+        {
+            var ProductRepo = _unit.GetRepo<Product, int>();
+            var products =await  ProductRepo.GetAll(x=>x.IsActive);
+            var result = products.Select(p => new ProductDTO
+            {
+                Name = p.Name,
+                Price = p.Price,
+                DiscountPrice = p.DiscountPrice,
+                CategoryId = p.CategoryId,
+                //CategoryName= p.Category.Name,
+
+            });
+
+            return result;
+
+        }
+        public void DeleteAsync(ProductDTO productDto)
+        {
+            throw new NotImplementedException();
+        }
 
        
 
-        public void DeleteProduct(int id)
+        public Task<IEnumerable<ProductDTO>> GetAllForAdminAsync()
         {
-            var Repo = _unit.GetRepo<Product, int>();
-            Repo.Delete(id);
+            throw new NotImplementedException();
         }
 
-
-
-
-        public void UpdateProduct(ProductDTO productdto)
+        public Task<decimal> GetAverageRatingAsync(ProductDTO product)
         {
-            var Repo = _unit.GetRepo<Product, int>();
-            var product = _mapper.Map<Product>(productdto);
-            Repo.Update(product);
+            throw new NotImplementedException();
         }
 
-       public async Task<IEnumerable<ProductDTO>>GetAllProducts()
+        public Task<ProductDTO> GetByIdAsync(int id)
         {
-            var Repo = _unit.GetRepo<Product, int>();
-            var products = await  Repo.GetAll();
-            var result =   _mapper.Map<IEnumerable<ProductDTO>>(products);
-            return  result;
-
+            throw new NotImplementedException();
         }
 
-      public  async Task<ProductDTO> GetProductById(int id)
+        public Task<IEnumerable<ProductDTO>> GetRelatedProductsAsync(ProductDTO product)
         {
-            var Repo = _unit.GetRepo<Product, int>();
-            var product =await  Repo.GetById(id);
-            if(product == null)
-                {
-                throw new Exception("Product not found");
-            }
-            else
-            {
-                var result = _mapper.Map<ProductDTO>(product);
-                return result;
-            }
-
-
+            throw new NotImplementedException();
         }
 
-        void IProductService.AddProduct(ProductDTO productdto)
+        public Task<bool> ToggleActiveAsync(ProductDTO product)
         {
-            var Repo = _unit.GetRepo<Product, int>();
-            var product = _mapper.Map<Product>(productdto);
-             Repo.Add(product);
-            _unit.Save();
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAsync(ProductDTO productDto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

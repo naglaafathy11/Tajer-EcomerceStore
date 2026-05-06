@@ -7,8 +7,7 @@ namespace Tajer.BL.Services.MappingProfile
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductDTO>();
-            CreateMap<ProductDTO, Product>();   
+            CreateMap<Product, ProductDTO>().ReverseMap();
         }
 
     }
