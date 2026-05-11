@@ -1,40 +1,39 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tajer.BL.DTO;
 using Tajer.BL.Services.Interfaces;
 using Tajer.DAL.Models;
 using Tajer.DAL.Repo.Interfaces;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace Tajer.BL.Services.Implementation
 {
-    public class ProductService(IUnitOfWork _unit , IMapper _mapper) : IProductService
+    public class ProductService(IUnitOfWork _unit, IMapper _mapper) : IProductService
     {
+        #region Add Product
         public async Task<ProductDTO> CreateAsync(ProductDTO productDto)
         {
             // 1. Validate Input
-            if(productDto is null)
+            if (productDto is null)
                 throw new Exception("Product data is required.");
-            if(string.IsNullOrWhiteSpace(productDto.Name))
+            if (string.IsNullOrWhiteSpace(productDto.Name))
                 throw new Exception("Product name is required.");
-            if(productDto.Price <= 0)
+            if (productDto.Price <= 0)
                 throw new Exception("Product price must be greater than zero.");
 
             // 2. Get Repos
             var ProductRepo = _unit.GetRepo<Product, int>();
             var CategoryRepo = _unit.GetRepo<Category, int>();
             // 3. Check Category Exists
-            var  category = CategoryRepo.GetById(productDto.CategoryId) ;
-            if(category is null)
+            var category = await CategoryRepo.GetById(productDto.CategoryId);
+            if (category is null)
                 throw new Exception("Category not found.");
 
             // 4. Check Duplicate (Business Rule)
             var products = await ProductRepo.GetAll();
             bool isDublicate = products.Any(p => p.Name.ToLower() == productDto.Name.ToLower());
-            if(isDublicate)
+            if (isDublicate)
                 throw new Exception("A product with the same name already exists.");
 
 
@@ -44,66 +43,113 @@ namespace Tajer.BL.Services.Implementation
             productEntity.CreatedAt = DateTime.UtcNow;
 
             // 7. Add
-            await  ProductRepo.Add(productEntity);
+            await ProductRepo.Add(productEntity);
             // 8. Save
-             await _unit.Save();
+            await _unit.SaveAsync();
             // 9. Return Result
             return _mapper.Map<ProductDTO>(productEntity);
         }
+        #endregion
 
-
-        public async Task<IEnumerable<ProductDTO>> GetAllAsync()
+        #region Delete
+        public async Task Delete(int id)
         {
             var ProductRepo = _unit.GetRepo<Product, int>();
-            var products =await  ProductRepo.GetAll(x=>x.IsActive);
-            var result = products.Select(p => new ProductDTO
+            var product = await ProductRepo.GetById(id);
+            if (product is null)
+                throw new Exception("Product not found.");
+            else
             {
-                Name = p.Name,
-                Price = p.Price,
-                DiscountPrice = p.DiscountPrice,
-                CategoryId = p.CategoryId,
-                //CategoryName= p.Category.Name,
-
-            });
-
-            return result;
-
+                ProductRepo.Delete(id);
+                await _unit.SaveAsync();
+            }
         }
-        public void DeleteAsync(ProductDTO productDto)
+
+        #endregion
+
+        #region Update
+        public async Task Update(int id)
         {
-            throw new NotImplementedException();
+            var ProductRepo = _unit.GetRepo<Product, int>();
+            var product = await ProductRepo.GetById(id);
+            if (product is null)
+                throw new Exception("Product not found.");
+            else
+            {
+                ProductRepo.Update(product);
+                product.UpdatedAt = DateTime.UtcNow;
+                await _unit.SaveAsync();
+            }
         }
+        #endregion
 
-       
 
-        public Task<IEnumerable<ProductDTO>> GetAllForAdminAsync()
+        #region GetAll
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var ProductRepo = _unit.ProductRepo;
+
+            var product = await ProductRepo.GetAllWithCategory(p => p.IsActive);
+            return _mapper.Map<IEnumerable<ProductDTO>>(product);
         }
 
-        public Task<decimal> GetAverageRatingAsync(ProductDTO product)
+        public async Task<IEnumerable<ProductDTO>> GetAllForAdminAsync()
         {
-            throw new NotImplementedException();
+            var ProductRepo = _unit.ProductRepo;
+
+            var product = await ProductRepo.GetAllWithCategory();
+            return _mapper.Map<IEnumerable<ProductDTO>>(product);
         }
 
-        public Task<ProductDTO> GetByIdAsync(int id)
+        #endregion
+
+
+        #region GetById
+        public async Task<ProductDTO> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+
+            var repo = _unit.ProductRepo;
+
+            var product = await repo.GetByIdWithCategoryAndReview(id);
+            if (product is null)
+                throw new Exception("Product Not Found");
+            else
+
+                return _mapper.Map<ProductDTO>(product);
         }
 
-        public Task<IEnumerable<ProductDTO>> GetRelatedProductsAsync(ProductDTO product)
+        #endregion
+
+
+        #region  Toggle
+        public async Task<bool> ToggleActiveAsync(ProductDTO productdto)
         {
-            throw new NotImplementedException();
+            var productRepo = _unit.GetRepo<Product, int>();
+
+            var product = await productRepo.GetById(productdto.Id);
+            if (product is null)
+                throw new Exception("Product Not Found");
+
+
+
+            product.IsActive = !product.IsActive;
+
+            productRepo.Update(product);
+
+            product.UpdatedAt = DateTime.UtcNow;
+            ;
+
+            return await _unit.SaveAsync() > 0;
+
+
+
+
+
+
+
         }
 
-        public Task<bool> ToggleActiveAsync(ProductDTO product)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
-        public void UpdateAsync(ProductDTO productDto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

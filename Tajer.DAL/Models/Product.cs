@@ -10,6 +10,8 @@
         public bool IsActive { get; set; }
         public string SKU { get; set; } = null!;
         public int CategoryId { get; set; } // FK 
+        public Category Category { get; set; } = null!;
+
         public ICollection<OrderItem> OrderItems { get; set; } = null!;
             public ICollection<Review> Reviews { get; set; } = null!;
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = null!;

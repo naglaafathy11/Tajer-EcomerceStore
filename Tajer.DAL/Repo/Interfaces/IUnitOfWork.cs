@@ -11,6 +11,8 @@ namespace Tajer.DAL.Repo.Interfaces
     {
         IGenaricRepo<T, TK> GetRepo<T, TK>() where T : BaseEntity<TK>;
 
-        Task<int> Save();
+        Task<int> SaveAsync();
+
+        IProductRepo ProductRepo { get; }
     }
 }

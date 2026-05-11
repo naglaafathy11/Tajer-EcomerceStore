@@ -12,12 +12,15 @@ namespace Tajer.DAL.Configrations
                 t.HasCheckConstraint("CK_Product_Price", "[Price] > 0");
             });
             builder.Property(p => p.Description).HasColumnType("nvarchar(200)").IsRequired(false);
+            builder.Property(p => p.IsActive).IsRequired();
 
 
-            builder.HasOne<Category>()
-           .WithMany(c => c.Products)
-           .HasForeignKey(p => p.CategoryId)
-           .OnDelete(DeleteBehavior.Restrict);
+           
+
+            builder.HasOne(p => p.Category)
+       .WithMany(c => c.Products)
+       .HasForeignKey(p => p.CategoryId)
+       .OnDelete(DeleteBehavior.Restrict);
         }
 
 
