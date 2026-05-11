@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tajer.BL.DTO
+﻿namespace Tajer.BL.DTO
 {
-    public class ProductDTO 
+    public class ProductDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
@@ -17,13 +11,14 @@ namespace Tajer.BL.DTO
         public bool IsActive { get; set; }
 
         public string AddedAt { get; set; } = null!;
-        public string? UpdatedAt { get; set; } 
+        public string? UpdatedAt { get; set; }
 
         public int CategoryId { get; set; }
 
-        public string CategoryName { get; set; } = null!; 
+        public string CategoryName { get; set; } = null!;
 
 
+        public List<string> Reviews { get; set; } = new List<string>();
 
 
 

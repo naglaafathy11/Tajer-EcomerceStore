@@ -13,12 +13,10 @@ namespace Tajer.BL.Services.Interfaces
         Task<IEnumerable<ProductDTO>> GetAllAsync();
         Task<IEnumerable<ProductDTO>> GetAllForAdminAsync();
         Task<ProductDTO> GetByIdAsync(int id);
-        Task<IEnumerable<ProductDTO>> GetRelatedProductsAsync(ProductDTO product);
         Task<ProductDTO> CreateAsync(ProductDTO productDto);
-        void UpdateAsync(ProductDTO productDto);
-        void DeleteAsync(ProductDTO productDto);
+         Task Update (int id);
+        Task Delete(int id);
         Task<bool> ToggleActiveAsync(ProductDTO product);
-        Task<decimal> GetAverageRatingAsync(ProductDTO product);
 
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tajer.DAL.Data;
-using Tajer.DAL.Models;
+﻿using Tajer.DAL.Data;
 using Tajer.DAL.Repo.Interfaces;
 
 namespace Tajer.DAL.Repo.Implemntation
@@ -12,10 +6,12 @@ namespace Tajer.DAL.Repo.Implemntation
     public class UnitOfWork(AppDbContext _context) : IUnitOfWork
     {
         private readonly Dictionary<string, object> _repos = new Dictionary<string, object>();
+
+        public IProductRepo ProductRepo => new ProductRepo(_context);
         public IGenaricRepo<T, TK> GetRepo<T, TK>() where T : BaseEntity<TK>
         {
             var type = typeof(T).Name;
-            if(_repos.ContainsKey(type))
+            if (_repos.ContainsKey(type))
             {
                 return (IGenaricRepo<T, TK>)_repos[type];
             }
@@ -28,7 +24,7 @@ namespace Tajer.DAL.Repo.Implemntation
 
         }
 
-        public async Task<int> Save()
+        public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();
         }

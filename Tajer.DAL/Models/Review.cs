@@ -8,5 +8,9 @@
         public string Comment { get; set; } = null!;
         public bool IsApproved { get; set; }
 
+
+        public ICollection<Review> Reviews { get; set; } = null!;
+
     }
+        
 }
