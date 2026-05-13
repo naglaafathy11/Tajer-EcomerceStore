@@ -14,5 +14,7 @@ namespace Tajer.DAL.Repo.Interfaces
         Task<int> SaveAsync();
 
         IProductRepo ProductRepo { get; }
+
+        ICartRepo CartRepo { get; }
     }
-}
+} 

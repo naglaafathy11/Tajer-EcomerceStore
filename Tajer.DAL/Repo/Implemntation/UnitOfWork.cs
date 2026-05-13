@@ -8,6 +8,9 @@ namespace Tajer.DAL.Repo.Implemntation
         private readonly Dictionary<string, object> _repos = new Dictionary<string, object>();
 
         public IProductRepo ProductRepo => new ProductRepo(_context);
+
+        public ICartRepo CartRepo => new CartRepo(_context);
+
         public IGenaricRepo<T, TK> GetRepo<T, TK>() where T : BaseEntity<TK>
         {
             var type = typeof(T).Name;
