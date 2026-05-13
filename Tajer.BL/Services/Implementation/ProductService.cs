@@ -60,7 +60,7 @@ namespace Tajer.BL.Services.Implementation
                 throw new Exception("Product not found.");
             else
             {
-                ProductRepo.Delete(id);
+                ProductRepo.Delete(product.Id);
                 await _unit.SaveAsync();
             }
         }
