@@ -6,6 +6,9 @@
         public int ProductId { get; set; } //FK
         public int Quantity { get; set; }
 
+        public Product Product { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
+
 
     }
 }
