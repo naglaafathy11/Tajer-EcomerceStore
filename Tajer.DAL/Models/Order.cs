@@ -17,7 +17,7 @@ namespace Tajer.DAL.Models
         public string? TrackingNumber { get; set; }
         public string? Notes { get; set; }
         public string   UserId { get; set; }  = null!; //FK
-
+        public ApplicationUser User { get; set; } = null!;
         public ICollection<OrderItem> OrderItems { get; set; } = null!;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tajer.BL.DTO;
 using Tajer.BL.DTO.CarDTO;
+using Tajer.BL.DTO.OrderDTO;
 using Tajer.DAL.Models;
 namespace Tajer.BL.Services.MappingProfile
 {
@@ -27,7 +28,15 @@ namespace Tajer.BL.Services.MappingProfile
                 .ForMember(src => src.Quantity, opt => opt.MapFrom(s => s.Quantity))
                 .ReverseMap();
 
+
+
             CreateMap<ShoppingCartItem, AddToCartDto>();
+
+
+            CreateMap<Order, OrderListDTO>();
+
+            CreateMap<Order, OrderDetailsDTO>()
+            .ForMember(src=> src.UserName , opt=>opt.MapFrom(o=>o.User.UserName));
 
         }
 

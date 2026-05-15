@@ -16,5 +16,6 @@ namespace Tajer.DAL.Repo.Interfaces
         IProductRepo ProductRepo { get; }
 
         ICartRepo CartRepo { get; }
+        IOrderRepo orderRepo { get; }
     }
 } 
