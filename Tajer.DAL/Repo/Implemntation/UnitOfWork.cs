@@ -11,6 +11,8 @@ namespace Tajer.DAL.Repo.Implemntation
 
         public ICartRepo CartRepo => new CartRepo(_context);
 
+        public IOrderRepo orderRepo => new OrderRepo(_context);
+
         public IGenaricRepo<T, TK> GetRepo<T, TK>() where T : BaseEntity<TK>
         {
             var type = typeof(T).Name;
