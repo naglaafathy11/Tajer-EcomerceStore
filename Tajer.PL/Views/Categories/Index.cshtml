@@ -1,0 +1,539 @@
+﻿@model IEnumerable<Tajer.BL.DTO.CategoryDTO>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<style>
+
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        border-radius: 30px;
+        padding: 35px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(37,99,235,.18);
+    }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.08);
+            top: -120px;
+            right: -100px;
+        }
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.05);
+            bottom: -80px;
+            left: -60px;
+        }
+
+    .header-title {
+        font-size: 34px;
+        font-weight: 800;
+    }
+
+    .header-subtitle {
+        opacity: .85;
+        margin-top: 6px;
+    }
+
+    .btn-add {
+        background: white;
+        color: #2563eb;
+        border: none;
+        border-radius: 16px;
+        padding: 14px 24px;
+        font-weight: 700;
+        transition: .3s;
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+        .btn-add:hover {
+            transform: translateY(-3px);
+            color: #2563eb;
+        }
+
+    .alert {
+        border: none;
+        border-radius: 18px;
+        padding: 18px 22px;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 30px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 15px 35px rgba(15,23,42,.06);
+    }
+
+    .table-top {
+        padding: 24px 28px;
+        border-bottom: 1px solid #eef2f7;
+        background: #fcfcfd;
+    }
+
+    .table-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .table-subtitle {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .modern-table {
+        margin: 0;
+    }
+
+        .modern-table thead {
+            background: #f8fafc;
+        }
+
+            .modern-table thead th {
+                border: none;
+                padding: 18px 20px;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                color: #64748b;
+                font-weight: 700;
+            }
+
+        .modern-table tbody tr {
+            transition: .25s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+            .modern-table tbody tr:hover {
+                background: #f8fafc;
+                transform: scale(1.002);
+            }
+
+        .modern-table td {
+            padding: 18px 20px;
+            vertical-align: middle;
+            border: none;
+        }
+
+    .category-image {
+        width: 58px;
+        height: 58px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 3px solid white;
+        box-shadow: 0 6px 15px rgba(0,0,0,.08);
+    }
+
+    .empty-image {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        background: #eef2f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 20px;
+    }
+
+    .category-name {
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .category-id {
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+    .description-text {
+        max-width: 260px;
+        color: #64748b;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .order-badge {
+        background: linear-gradient(135deg, #dbeafe, #ede9fe);
+        color: #4338ca;
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-weight: 700;
+        display: inline-block;
+        min-width: 52px;
+        text-align: center;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .action-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .25s;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .empty-state {
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+        .empty-state i {
+            font-size: 70px;
+            color: #cbd5e1;
+            margin-bottom: 18px;
+        }
+
+        .empty-state h4 {
+            color: #334155;
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+        }
+
+</style>
+
+<div class="container py-4">
+
+    <!-- HEADER -->
+    <div class="page-header mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <div class="header-title">
+                    Categories
+                </div>
+
+                <div class="header-subtitle">
+                    Manage all store categories and organization
+                </div>
+
+            </div>
+
+            <a asp-action="Create"
+               class="btn btn-add">
+
+                <i class="bi bi-plus-circle-fill me-2"></i>
+                Add New Category
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- ALERTS -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+             role="alert">
+
+            <i class="bi bi-check-circle-fill me-2"></i>
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4"
+             role="alert">
+
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    <!-- TABLE CARD -->
+    <div class="table-card">
+
+        <!-- TOP -->
+        <div class="table-top d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+
+                <div class="table-title">
+                    Categories List
+                </div>
+
+                <div class="table-subtitle">
+                    Total Categories : @Model.Count()
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-responsive">
+
+            <table class="table modern-table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Category</th>
+
+                        <th>Description</th>
+
+                        <th>Order</th>
+
+                        <th>Status</th>
+
+                        <th class="text-center">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+
+                            <td colspan="5">
+
+                                <div class="empty-state">
+
+                                    <i class="bi bi-folder2-open"></i>
+
+                                    <h4>
+                                        No Categories Found
+                                    </h4>
+
+                                    <p class="mb-4">
+                                        Start by creating your first category.
+                                    </p>
+
+                                    <a asp-action="Create"
+                                       class="btn btn-primary rounded-pill px-4 py-2">
+
+                                        <i class="bi bi-plus-lg me-2"></i>
+                                        Add Category
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+
+                            <!-- CATEGORY -->
+                            <td>
+
+                                <div class="d-flex align-items-center gap-3">
+
+                                    @if (!string.IsNullOrEmpty(c.ImageUrl))
+                                    {
+                                        <img src="@c.ImageUrl"
+                                             alt="@c.Name"
+                                             class="category-image" />
+                                    }
+                                    else
+                                    {
+                                        <div class="empty-image">
+
+                                            <i class="bi bi-folder2"></i>
+
+                                        </div>
+                                    }
+
+                                    <div>
+
+                                        <div class="category-name">
+                                            @c.Name
+                                        </div>
+
+                                        <div class="category-id">
+                                            #@c.Id
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <!-- DESCRIPTION -->
+                            <td>
+
+                                <div class="description-text">
+
+                                    @(string.IsNullOrEmpty(c.Description)
+                                        ? "No description available"
+                                        : c.Description)
+
+                                </div>
+
+                            </td>
+
+                            <!-- ORDER -->
+                            <td>
+
+                                <span class="order-badge">
+
+                                    @c.DisplayOrder
+
+                                </span>
+
+                            </td>
+
+                            <!-- STATUS -->
+                            <td>
+
+                                @if (c.IsActive)
+                                {
+                                    <span class="badge bg-success status-badge">
+
+                                        <i class="bi bi-check-circle-fill me-1"></i>
+                                        Active
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger status-badge">
+
+                                        <i class="bi bi-x-circle-fill me-1"></i>
+                                        Inactive
+
+                                    </span>
+                                }
+
+                            </td>
+
+                            <!-- ACTIONS -->
+                            <td>
+
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    <!-- DETAILS -->
+                                    <a asp-action="Details"
+                                       asp-route-id="@c.Id"
+                                       class="btn btn-outline-secondary action-btn"
+                                       title="Details">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </a>
+
+                                    <!-- EDIT -->
+                                    <a asp-action="Edit"
+                                       asp-route-id="@c.Id"
+                                       class="btn btn-outline-primary action-btn"
+                                       title="Edit">
+
+                                        <i class="bi bi-pencil-square"></i>
+
+                                    </a>
+
+                                    <!-- TOGGLE -->
+                                    <form asp-action="Toggle"
+                                          asp-route-id="@c.Id"
+                                          method="post"
+                                          class="d-inline">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                class="btn @(c.IsActive
+                                                                                                    ? "btn-outline-warning"
+                                                                                                    : "btn-outline-success")
+                                            action-btn"
+                                                title="@(c.IsActive
+                                                                                                    ? "Deactivate"
+                                                                                                    : "Activate")">
+
+                                            <i class="bi @(c.IsActive
+                                                                                               ? "bi-toggle-on"
+                                                                                               : "bi-toggle-off")"></i>
+
+                                        </button>
+
+                                    </form>
+
+                                    <!-- DELETE -->
+                                    <a asp-action="Delete"
+                                       asp-route-id="@c.Id"
+                                       class="btn btn-outline-danger action-btn"
+                                       title="Delete">
+
+                                        <i class="bi bi-trash"></i>
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
