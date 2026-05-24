@@ -6,7 +6,7 @@
         public string Description { get; set; } = null!;
         public decimal? DiscountPrice { get; set; }
         public int StockQuantity { get; set; }
-        public string ImageUrl { get; set; } = null!;
+        public string ImageUrl { get; set; } 
         public bool IsActive { get; set; }
         public string SKU { get; set; } = null!;
         public int CategoryId { get; set; } // FK 

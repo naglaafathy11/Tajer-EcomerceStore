@@ -15,12 +15,26 @@ namespace Tajer.DAL.Configrations
             builder.Property(p => p.IsActive).IsRequired();
 
 
-           
+            builder.Property(p => p.SKU)
+     .HasColumnType("nvarchar(100)")
+     .IsRequired();
+
+
 
             builder.HasOne(p => p.Category)
-       .WithMany(c => c.Products)
-       .HasForeignKey(p => p.CategoryId)
-       .OnDelete(DeleteBehavior.Restrict);
+           .WithMany(c => c.Products)
+           .HasForeignKey(p => p.CategoryId)
+           .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.OrderItems)
+                .WithOne(oi => oi.Product)
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(p => p.ShoppingCartItems)
+                .WithOne(s => s.Product)
+                .HasForeignKey(s => s.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 

@@ -24,6 +24,12 @@ namespace Tajer.DAL.Configrations
                 .WithMany(p => p.ShoppingCartItems)
                 .HasForeignKey(sci => sci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.HasOne(s => s.User)
+         .WithMany()
+         .HasForeignKey(s => s.UserId)
+         .OnDelete(DeleteBehavior.Restrict);
         }
 
 

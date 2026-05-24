@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tajer.BL.DTO;
-using Tajer.DAL.Models;
+﻿using Tajer.BL.DTO;
 
 namespace Tajer.BL.Services.Interfaces
 {
     public interface IProductService
     {
+        // Queries
         Task<IEnumerable<ProductDTO>> GetAllAsync();
         Task<IEnumerable<ProductDTO>> GetAllForAdminAsync();
         Task<ProductDTO> GetByIdAsync(int id);
-        Task<ProductDTO> CreateAsync(ProductDTO productDto);
-         Task Update (int id);
-        Task Delete(int id);
-        Task<bool> ToggleActiveAsync(ProductDTO product);
 
+        // Commands
+        Task<ProductDTO> CreateAsync(ProductDTO productDto);
+        Task<ProductDTO> UpdateAsync(int id, ProductDTO productDto);
+        Task Delete(int id);
+        Task<bool> ToggleActiveAsync(ProductDTO productDto);
     }
 }

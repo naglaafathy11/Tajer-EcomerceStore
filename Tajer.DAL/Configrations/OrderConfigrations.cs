@@ -17,6 +17,12 @@
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.HasOne(o => o.User)
+          .WithMany()
+          .HasForeignKey(o => o.UserId)
+          .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
