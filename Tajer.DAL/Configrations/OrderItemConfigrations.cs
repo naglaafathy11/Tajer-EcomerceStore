@@ -14,7 +14,7 @@
             builder.Ignore(oi=> oi.Name);
            
 
-            builder.HasOne<Order>()
+            builder.HasOne<Order>(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
