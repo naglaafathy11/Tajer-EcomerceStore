@@ -1,0 +1,398 @@
+﻿@model Tajer.BL.DTO.CategoryDTO
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<style>
+
+    body {
+        background: #f4f7fb;
+    }
+
+    .delete-header {
+        background: linear-gradient(135deg, #dc2626, #7f1d1d);
+        border-radius: 28px;
+        padding: 32px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(220,38,38,.22);
+    }
+
+        .delete-header::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.08);
+            top: -100px;
+            right: -80px;
+        }
+
+    .danger-alert {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        border: none;
+        border-radius: 22px;
+        padding: 22px;
+        color: #7f1d1d;
+        box-shadow: 0 6px 18px rgba(220,38,38,.08);
+    }
+
+    .glass-card {
+        background: white;
+        border-radius: 26px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #ef4444, #b91c1c);
+        color: white;
+        padding: 18px 24px;
+        font-weight: 700;
+        font-size: 17px;
+    }
+
+    .category-preview {
+        background: #f8fafc;
+        border-radius: 22px;
+        padding: 20px;
+    }
+
+    .category-image {
+        width: 85px;
+        height: 85px;
+        object-fit: cover;
+        border-radius: 20px;
+        border: 4px solid white;
+        box-shadow: 0 6px 15px rgba(0,0,0,.08);
+    }
+
+    .empty-image {
+        width: 85px;
+        height: 85px;
+        border-radius: 20px;
+        background: #eef2f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 32px;
+        border: 2px dashed #cbd5e1;
+    }
+
+    .category-name {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .category-meta {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .info-box {
+        background: #f8fafc;
+        border-radius: 18px;
+        padding: 18px;
+        margin-bottom: 16px;
+    }
+
+    .info-label {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .warning-box {
+        background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        border-radius: 20px;
+        padding: 20px;
+        border-left: 5px solid #f97316;
+    }
+
+        .warning-box ul {
+            padding-left: 18px;
+            margin-bottom: 0;
+            color: #9a3412;
+        }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #dc2626, #991b1b);
+        border: none;
+        color: white;
+        border-radius: 14px;
+        padding: 13px 30px;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .btn-delete:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(220,38,38,.22);
+        }
+
+    .btn-cancel {
+        border-radius: 14px;
+        padding: 13px 28px;
+        font-weight: 600;
+    }
+
+</style>
+
+<div class="container py-4">
+
+    <!-- HEADER -->
+    <div class="delete-header mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <a asp-action="Index"
+                   class="btn btn-light rounded-circle shadow-sm">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                </a>
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        Delete Category
+                    </h2>
+
+                    <div class="opacity-75">
+                        You are about to permanently remove this category
+                    </div>
+
+                </div>
+
+            </div>
+
+            <span class="badge bg-light text-danger px-3 py-2 rounded-pill fw-semibold">
+
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                Dangerous Action
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <!-- ALERT -->
+            <div class="danger-alert d-flex gap-3 align-items-start mb-4">
+
+                <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+
+                <div>
+
+                    <h5 class="fw-bold mb-2">
+                        This action cannot be undone
+                    </h5>
+
+                    <div>
+                        Deleting this category may affect products currently assigned to it.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- CARD -->
+            <div class="glass-card mb-4">
+
+                <div class="card-header-custom">
+
+                    <i class="bi bi-folder2-open me-2"></i>
+                    Category Information
+
+                </div>
+
+                <div class="p-4">
+
+                    <!-- CATEGORY PREVIEW -->
+                    <div class="category-preview d-flex align-items-center gap-4 mb-4">
+
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl"
+                                 alt="@Model.Name"
+                                 class="category-image" />
+                        }
+                        else
+                        {
+                            <div class="empty-image">
+
+                                <i class="bi bi-folder2"></i>
+
+                            </div>
+                        }
+
+                        <div>
+
+                            <div class="category-name">
+                                @Model.Name
+                            </div>
+
+                            <div class="category-meta mt-1">
+                                Display Order: @Model.DisplayOrder
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- DETAILS -->
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="info-box">
+
+                                <div class="info-label">
+                                    Status
+                                </div>
+
+                                <div class="info-value">
+
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success status-badge">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary status-badge">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="info-box">
+
+                                <div class="info-label">
+                                    Display Order
+                                </div>
+
+                                <div class="info-value">
+                                    @Model.DisplayOrder
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="info-box mb-0">
+
+                            <div class="info-label">
+                                Description
+                            </div>
+
+                            <div class="info-value">
+                                @Model.Description
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+            <!-- WARNING -->
+            <div class="warning-box mb-4">
+
+                <div class="fw-bold mb-3 text-dark">
+
+                    <i class="bi bi-shield-exclamation me-2"></i>
+                    Before You Delete
+
+                </div>
+
+                <ul>
+
+                    <li class="mb-2">
+                        Products inside this category may lose their assignment.
+                    </li>
+
+                    <li class="mb-2">
+                        This operation is permanent and irreversible.
+                    </li>
+
+                    <li>
+                        Consider deactivating the category instead of deleting it.
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="d-flex flex-wrap gap-3">
+
+                <form asp-action="Delete"
+                      asp-route-id="@Model.Id"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="btn btn-delete">
+
+                        <i class="bi bi-trash3-fill me-2"></i>
+                        Yes, Delete Category
+
+                    </button>
+
+                </form>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary btn-cancel">
+
+                    <i class="bi bi-x-circle me-2"></i>
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

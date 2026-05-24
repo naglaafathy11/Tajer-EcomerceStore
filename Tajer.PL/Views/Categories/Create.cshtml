@@ -1,0 +1,485 @@
+﻿@model Tajer.BL.DTO.CategoryDTO
+
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<style>
+
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #0f172a, #2563eb);
+        border-radius: 28px;
+        padding: 32px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(37,99,235,.22);
+    }
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.08);
+            top: -100px;
+            right: -90px;
+        }
+
+    .glass-card {
+        background: white;
+        border-radius: 24px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0,0,0,.06);
+    }
+
+    .section-title {
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        color: white;
+        padding: 16px 24px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .card-body-custom {
+        padding: 28px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border-radius: 16px;
+        min-height: 52px;
+        border: 1px solid #dbe2ea;
+        transition: .25s;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+    }
+
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 .2rem rgba(99,102,241,.15);
+    }
+
+    .form-text {
+        color: #64748b;
+    }
+
+    .preview-box {
+        background: #f8fafc;
+        border: 2px dashed #c7d2fe;
+        border-radius: 22px;
+        padding: 25px;
+        text-align: center;
+        margin-top: 20px;
+        display: none;
+    }
+
+        .preview-box img {
+            max-height: 220px;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 18px;
+        }
+
+    .status-box {
+        background: linear-gradient(135deg, #ecfeff, #f0fdf4);
+        border-radius: 20px;
+        padding: 18px;
+    }
+
+    .status-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+    }
+
+    .btn-create {
+        background: linear-gradient(135deg, #2563eb, #7c3aed);
+        border: none;
+        color: white;
+        border-radius: 14px;
+        padding: 13px 30px;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .btn-create:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124,58,237,.22);
+        }
+
+    .btn-cancel {
+        border-radius: 14px;
+        padding: 13px 28px;
+        font-weight: 600;
+    }
+
+    .tips-card {
+        background: linear-gradient(180deg, #ffffff, #eef2ff);
+        border-radius: 24px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,.05);
+        position: sticky;
+        top: 20px;
+    }
+
+    .tips-header {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: white;
+        padding: 16px 22px;
+        font-weight: 700;
+    }
+
+    .tip-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        color: #475569;
+    }
+
+        .tip-item i {
+            color: #7c3aed;
+            margin-top: 4px;
+        }
+
+</style>
+
+<div class="container py-4">
+
+    <!-- HEADER -->
+    <div class="page-header mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <a asp-action="Index"
+                   class="btn btn-light rounded-circle shadow-sm">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                </a>
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        Create New Category
+                    </h2>
+
+                    <div class="opacity-75">
+                        Organize your products with professional categories
+                    </div>
+
+                </div>
+
+            </div>
+
+            <span class="badge bg-light text-primary px-3 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-grid me-1"></i>
+                Category Panel
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- FORM -->
+        <div class="col-lg-8">
+
+            <form asp-action="Create"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="alert alert-danger rounded-4 shadow-sm"
+                     style="display:none">
+                </div>
+
+                <!-- CATEGORY INFO -->
+                <div class="glass-card mb-4">
+
+                    <div class="section-title">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Category Information
+                    </div>
+
+                    <div class="card-body-custom">
+
+                        <div class="mb-4">
+
+                            <label asp-for="Name"
+                                   class="form-label"></label>
+
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="e.g. Electronics" />
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger small"></span>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="Description"
+                                   class="form-label"></label>
+
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      placeholder="Write a brief category description..."></textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger small"></span>
+
+                        </div>
+
+                        <div>
+
+                            <label asp-for="DisplayOrder"
+                                   class="form-label">
+
+                                Display Order
+
+                            </label>
+
+                            <input asp-for="DisplayOrder"
+                                   class="form-control"
+                                   type="number"
+                                   min="0"
+                                   placeholder="0" />
+
+                            <div class="form-text mt-2">
+                                Lower number means the category appears first.
+                            </div>
+
+                            <span asp-validation-for="DisplayOrder"
+                                  class="text-danger small"></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- IMAGE -->
+                <div class="glass-card mb-4">
+
+                    <div class="section-title">
+                        <i class="bi bi-image me-2"></i>
+                        Category Image
+                    </div>
+
+                    <div class="card-body-custom">
+
+                        <input type="file"
+                               name="imageFile"
+                               class="form-control"
+                               accept="image/*"
+                               onchange="previewImage(event)" />
+
+                        <div id="imagePreview"
+                             class="preview-box">
+
+                            <p class="text-muted mb-3">
+                                Image Preview
+                            </p>
+
+                            <img id="previewImg"
+                                 src="#"
+                                 alt="Preview" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- STATUS -->
+                <div class="glass-card mb-4">
+
+                    <div class="section-title">
+                        <i class="bi bi-toggle-on me-2"></i>
+                        Category Status
+                    </div>
+
+                    <div class="card-body-custom">
+
+                        <div class="status-box d-flex justify-content-between align-items-center">
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Visibility Status
+                                </h6>
+
+                                <small class="text-muted">
+                                    Inactive categories won't appear in the storefront.
+                                </small>
+
+                            </div>
+
+                            <div class="form-check form-switch status-switch">
+
+                                <input asp-for="IsActive"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       role="switch" />
+
+                                <label asp-for="IsActive"
+                                       class="form-check-label fw-semibold ms-2">
+
+                                    Active
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="d-flex flex-wrap gap-3">
+
+                    <button type="submit"
+                            class="btn btn-create">
+
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Create Category
+
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary btn-cancel">
+
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+
+            <div class="tips-card">
+
+                <div class="tips-header">
+
+                    <i class="bi bi-stars me-2"></i>
+                    Smart Tips
+
+                </div>
+
+                <div class="p-4">
+
+                    <div class="tip-item">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <div>
+                            Use short and clear category names.
+                        </div>
+
+                    </div>
+
+                    <div class="tip-item">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <div>
+                            Add a clean image to improve category appearance.
+                        </div>
+
+                    </div>
+
+                    <div class="tip-item">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <div>
+                            Organize categories using display order values.
+                        </div>
+
+                    </div>
+
+                    <div class="tip-item mb-0">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                        <div>
+                            Keep inactive categories hidden until ready.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        function previewImage(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = e => {
+
+                document.getElementById('previewImg').src = e.target.result;
+
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const vs = document.querySelector('[data-valmsg-summary]');
+
+            if (vs && vs.querySelectorAll('li').length > 0)
+                vs.style.display = 'block';
+        });
+
+    </script>
+}

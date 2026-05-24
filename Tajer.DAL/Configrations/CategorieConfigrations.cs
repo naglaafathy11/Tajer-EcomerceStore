@@ -13,7 +13,10 @@ namespace Tajer.DAL.Configrations
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(c => c.Description).HasColumnType("nvarchar(200)").IsRequired(false);
-            
+            builder.Property(c => c.ImageUrl)
+    .HasColumnType("nvarchar(300)")
+    .IsRequired(false);    // ← اضيف السطر ده
+
         }
     }
 }
